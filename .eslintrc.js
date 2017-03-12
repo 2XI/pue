@@ -32,6 +32,7 @@ module.exports = {
 		"no-unused-vars": 0,
 		"no-console": 0,
 		"eol-last": 0,
-		"space-before-function-paren": 0
+		"space-before-function-paren": 0,
+		"no-proto": 0
 	}
 };

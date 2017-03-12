@@ -5,12 +5,13 @@ const app = new Pue({
 		user: {
 			name: 'youngwind',
 			age: 24
-		}
+		},
+		a: 'wz'
 	}
+	// ,
+	// watch: {
+	// 	a: function() {
+	// 		console.log('Hello world!')
+	// 	}
+	// }
 })
-
-function test() {
-	console.log('Hello world!')
-}
-
-test()
