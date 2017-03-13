@@ -1,19 +1,46 @@
+let fragment
+let currentNodeList = []
+
 exports._compile = function() {
+	fragment = document.createDocumentFragment()
+
+	// 用一个栈存储遍历过程中当前的父节点
+	currentNodeList.push(fragment)
+
 	this._compileNode(this.$el)
+
+	this.$el.parentNode.replaceChild(fragment, this.$el)
+	this.$el = document.querySelector(this.$options.el)
 }
 
 exports._compileElement = function(node) {
-	if (node.hasChildNodes) {
+	let newNode = document.createElement(node.tagName)
+	if (node.hasAttributes()) {
+		let attrs = node.attributes
+		Array.from(attrs).forEach((attr) => {
+			newNode.setAttribute(attr.name, attr.value)
+		})
+	}
+
+	let currentNode = currentNodeList[currentNodeList.length - 1].appendChild(newNode)
+	if (node.hasChildNodes()) {
+		currentNodeList.push(currentNode)
 		Array.from(node.childNodes).forEach(this._compileNode, this)
 	}
+
+	currentNodeList.pop()
 }
 
 exports._compileText = function(node) {
 	let nodeValue = node.nodeValue
+
 	if (nodeValue === '') { return }
+
 	let patt = /{{\S+}}/g
 	let ret = nodeValue.match(patt)
+
 	if (!ret) return
+
 	ret.forEach((value) => {
 		let property = value.replace(/[{}]/g, '')
 		let attr = property.split('.')
