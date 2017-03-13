@@ -1,7 +1,7 @@
 /**
  * 观察对象
  */
-
+import _ from '../util.js'
 import newArray from './array.js'
 import newObject from './object.js'
 
@@ -20,13 +20,7 @@ function Observer(value, type) {
 
 	// 这里的enumerable一定要设为false,否则会触发死循环
 	// 将当前对象存储到其$observer属性中
-	Object.defineProperty(value, '$observer', {
-		value: this,
-		enumerable: false,
-		writable: true,
-		configurable: true
-	})
-
+	_.define(value, '$observer', this, false)
 	if (type === ARRAY) {
 		value.__proto__ = newArray
 		this.link(value)
@@ -70,7 +64,11 @@ Observer.prototype.convert = function(key, val) {
 			if (newValue === val) { return }
 			val = newValue
 			console.log('你设置了' + key + '，新的' + key + '=' + newValue)
+
+			// 触发set事件，重新编译模板
 			ob.notify('set', key, newValue)
+
+			// 触发watch的回调
 			ob.notify(`set:${key}`, key, newValue)
 		}
 	})
@@ -84,8 +82,11 @@ Observer.prototype.convert = function(key, val) {
  */
 
 Observer.prototype.observe = function(key, val) {
+	// 调用observe方法创建observer对象
 	let ob = Observer.create(val)
 	if (!ob) { return }
+
+	// 存储父节点，便于事件冒泡
 	ob.parent = {
 		key,
 		ob: this
@@ -167,6 +168,8 @@ Observer.prototype.off = function(event, fn) {
 
 Observer.prototype.notify = function(event, path, val) {
 	this.emit(event, path, val)
+
+	// 事件冒泡
 	let parent = this.parent
 	if (!parent) { return }
 	let ob = parent.ob
@@ -184,14 +187,15 @@ Observer.prototype.emit = function(event, path, val) {
 	this._cbs = this._cbs || {}
 	let callbacks = this._cbs[event]
 	if (!callbacks) { return }
-	callbacks = callbacks.slice(0)
+
 	callbacks.forEach((cb, i) => {
+		// console.log(arguments)
 		cb.apply(this, arguments)
 	})
 }
 
 /**
- * 根据不同的数据类型调用ObserverO构造函数
+ * 根据不同的数据类型调用Observer构造函数
  * @param value {Any} 数据
  * @returns {Observer}
  */

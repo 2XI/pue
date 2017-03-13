@@ -11,6 +11,8 @@ exports._compile = function() {
 
 	this.$el.parentNode.replaceChild(fragment, this.$el)
 		// 这里为什么要执行下面的语句
+
+	// 获得编译之后的挂载元素节点
 	this.$el = document.querySelector(this.$options.el)
 }
 
