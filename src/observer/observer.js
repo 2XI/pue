@@ -47,6 +47,8 @@ Observer.prototype.walk = function(obj) {
 	for (var key in obj) {
 		if (!obj.hasOwnProperty(key)) { return }
 		val = obj[key]
+
+		this.observe(key, val)
 		this.convert(key, val)
 	}
 }
@@ -197,7 +199,7 @@ Observer.prototype.emit = function(event, path, val) {
 Observer.create = function(value) {
 	if (Array.isArray(value)) {
 		return new Observer(value, ARRAY)
-	} else {
+	} else if (typeof value === 'object') {
 		return new Observer(value, OBJECT)
 	}
 }

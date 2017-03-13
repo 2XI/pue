@@ -10,6 +10,7 @@ exports._compile = function() {
 	this._compileNode(this.$el)
 
 	this.$el.parentNode.replaceChild(fragment, this.$el)
+		// 这里为什么要执行下面的语句
 	this.$el = document.querySelector(this.$options.el)
 }
 
@@ -50,7 +51,7 @@ exports._compileText = function(node) {
 		})
 		nodeValue = nodeValue.replace(value, pro)
 	}, this)
-	node.nodeValue = nodeValue
+	currentNodeList[currentNodeList.length - 1].appendChild(document.createTextNode(nodeValue));
 }
 
 exports._compileNode = function(node) {

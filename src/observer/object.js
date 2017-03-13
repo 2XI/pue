@@ -9,9 +9,9 @@ const newObject = {}
 _.define(newObject, '$add', function(key, val) {
 	if (this.hasOwnProperty(key)) { return }
 	_.define(this, key, val, true)
-		// let ob = this.$observer
-		// ob.observer(key, val)
-		// ob.convert(key, val)
+	let ob = this.$observer
+	ob.observe(key, val)
+	ob.convert(key, val)
 })
 
 _.define(newObject, '$delete', function(key) {
