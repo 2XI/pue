@@ -30,8 +30,7 @@ function Observer(value, type) {
 	if (type === ARRAY) {
 		value.__proto__ = newArray
 		this.link(value)
-	}
-	if (type === OBJECT) {
+	} else if (type === OBJECT) {
 		value.__proto__ = newObject
 		this.walk(value)
 	}
@@ -44,7 +43,7 @@ function Observer(value, type) {
 
 Observer.prototype.walk = function(obj) {
 	let val
-	for (var key in obj) {
+	for (let key in obj) {
 		if (!obj.hasOwnProperty(key)) { return }
 		val = obj[key]
 
@@ -185,8 +184,9 @@ Observer.prototype.emit = function(event, path, val) {
 	this._cbs = this._cbs || {}
 	let callbacks = this._cbs[event]
 	if (!callbacks) { return }
+	callbacks = callbacks.slice(0)
 	callbacks.forEach((cb, i) => {
-		cb.apply(this, val)
+		cb.apply(this, arguments)
 	})
 }
 

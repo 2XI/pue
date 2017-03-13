@@ -7,7 +7,7 @@ exports._compile = function() {
 	// 用一个栈存储遍历过程中当前的父节点
 	currentNodeList.push(fragment)
 
-	this._compileNode(this.$el)
+	this._compileNode(this.$template)
 
 	this.$el.parentNode.replaceChild(fragment, this.$el)
 		// 这里为什么要执行下面的语句
@@ -51,7 +51,7 @@ exports._compileText = function(node) {
 		})
 		nodeValue = nodeValue.replace(value, pro)
 	}, this)
-	currentNodeList[currentNodeList.length - 1].appendChild(document.createTextNode(nodeValue));
+	currentNodeList[currentNodeList.length - 1].appendChild(document.createTextNode(nodeValue))
 }
 
 exports._compileNode = function(node) {

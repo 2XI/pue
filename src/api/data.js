@@ -4,6 +4,7 @@
 
 exports.$watch = function(key, fn) {
 	let _fn = function() {
+		console.log('arguments[2]' + arguments[2])
 		fn(arguments[2])
 	}
 
@@ -17,6 +18,6 @@ exports.$watch = function(key, fn) {
 		pathAry.forEach((property) => {
 			_temp = _temp[property]
 		})
-		_temp.$observer.on(`set:{lastProperty}`, _fn.bind(this)) // eslint-disable-line
+		_temp.$observer.on(`set:${lastProperty}`, _fn.bind(this)) // eslint-disable-line
 	}
 }

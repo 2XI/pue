@@ -2,7 +2,7 @@
  * Created by youngwind on 16/8/18.
  */
 
-import Bue from '../src/index';
+import Bue from '../src/index'
 
 const app = new Bue({
 	el: '#app',
@@ -19,16 +19,16 @@ const app = new Bue({
 			age: 24
 		}]
 	}
-});
+})
 
 app.$watch('name', function(val) {
-	console.log('我watch住了name');
-	console.log(`新的name为${val}`);
-});
+	console.log('我watch住了name')
+	console.log(`新的name为${val}`)
+})
 
 app.$watch('address.info.city', function(val) {
-	console.log('我watch住了city');
-	console.log(`新的city为${val}`);
-});
+	console.log('我watch住了city')
+	console.log(`新的city为${val}`)
+})
 
-window.app = app;
+window.app = app

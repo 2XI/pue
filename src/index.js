@@ -12,7 +12,7 @@ Pue.prototype = {
 	...require('./instance/compile'),
 	...require('./api/lifecycle'),
 	...require('./api/data'),
-	observer: {...require('./observer/observer.js') } // eslint-disable-line
+	observer: {...require('./observer/observer') } // eslint-disable-line
 }
 
 module.exports = Pue
