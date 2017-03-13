@@ -4,10 +4,10 @@
 */
 function Pue(options) {
 	this._init(options)
-	this.$data.a = 'hsx'
 }
 
 Pue.prototype = {
+	constructor: Pue,
 	...require('./instance/init'),
 	...require('./instance/compile'),
 	...require('./api/lifecycle'),
