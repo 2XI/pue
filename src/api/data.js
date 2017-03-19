@@ -5,7 +5,6 @@
 exports.$watch = function(key, fn) {
 	let _fn = function() {
 		// arguments数组中包含：事件类型、事件触发路径、事件回调函数的参数
-		console.log(arguments)
 		fn(arguments[2])
 	}
 

@@ -6,6 +6,8 @@ exports._init = function(options) {
 	// 保存模板以备下次编译
 	this.$template = this.$el.cloneNode(true)
 
+	this._directives = []
+
 	// 创建观察对象
 	this.observer = this.observer.create(this.$data)
 

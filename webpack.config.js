@@ -1,7 +1,3 @@
-/**
- * Created by youngwind on 16/8/1.
- */
-
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var CleanPlugin = require("clean-webpack-plugin");
 

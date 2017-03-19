@@ -8,6 +8,8 @@ import newObject from './object.js'
 const ARRAY = 0
 const OBJECT = 1
 
+let uid = 0
+
 /**
  * 观察者构造函数
  * @param value {Object} 数据对象
@@ -17,6 +19,7 @@ const OBJECT = 1
 
 function Observer(value, type) {
 	this.value = value
+	this.id = ++uid
 
 	// 这里的enumerable一定要设为false,否则会触发死循环
 	// 将当前对象存储到其$observer属性中

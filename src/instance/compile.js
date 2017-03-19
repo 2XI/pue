@@ -1,70 +1,52 @@
+import Directive from '../directive'
+
 let fragment
 let currentNodeList = []
 
 exports._compile = function() {
-	fragment = document.createDocumentFragment()
-
-	// 用一个栈存储遍历过程中当前的父节点
-	currentNodeList.push(fragment)
-
-	this._compileNode(this.$template)
-
-	this.$el.parentNode.replaceChild(fragment, this.$el)
-		// 这里为什么要执行下面的语句
-
-	// 获得编译之后的挂载元素节点
-	this.$el = document.querySelector(this.$options.el)
+	this._compileNode(this.$el)
 }
 
 exports._compileElement = function(node) {
-	let newNode = document.createElement(node.tagName)
-	if (node.hasAttributes()) {
-		let attrs = node.attributes
-		Array.from(attrs).forEach((attr) => {
-			newNode.setAttribute(attr.name, attr.value)
-		})
-	}
-
-	let currentNode = currentNodeList[currentNodeList.length - 1].appendChild(newNode)
 	if (node.hasChildNodes()) {
-		currentNodeList.push(currentNode)
 		Array.from(node.childNodes).forEach(this._compileNode, this)
 	}
-
-	currentNodeList.pop()
 }
 
 exports._compileText = function(node) {
+	let patt = /{{\w+}}/g
 	let nodeValue = node.nodeValue
+	let expressions = nodeValue.match(patt)
 
-	if (nodeValue === '') { return }
+	if (!expressions) return
 
-	let patt = /{{\S+}}/g
-	let ret = nodeValue.match(patt)
-
-	if (!ret) return
-
-	ret.forEach((value) => {
-		let property = value.replace(/[{}]/g, '')
-		let attr = property.split('.')
-		let pro = this.$data
-		attr.forEach((val) => {
-			pro = pro[val]
-		})
-		nodeValue = nodeValue.replace(value, pro)
-	}, this)
-	currentNodeList[currentNodeList.length - 1].appendChild(document.createTextNode(nodeValue))
+	expressions.forEach((expression) => {
+		let el = document.createTextNode('')
+		node.parentNode.insertBefore(el, node)
+		let property = expression.replace(/[{}]/g, '')
+		this._bindDirective('text', property, el)
+	})
+	node.parentNode.removeChild(node)
 }
 
 exports._compileNode = function(node) {
 	switch (node.nodeType) {
+		// node
 		case 1:
 			this._compileElement(node)
 			break
+			// text
 		case 3:
 			this._compileText(node)
 			break
 		default:
 			return
 	}
+}
+
+exports._bindDirective = function(name, expression, node) {
+	let dirs = this._directives
+	dirs.push(
+		new Directive(name, node, this, expression)
+	)
 }
