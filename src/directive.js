@@ -9,7 +9,12 @@ function Directive(name, el, vm, expression) {
 }
 
 Directive.prototype.update = function() {
-	this.el[this.attr] = this.vm.$data[this.expression]
+	let token = this.expression.split('.')
+	let data = this.vm.$data
+	token.forEach(element => {
+		data = data[element]
+	})
+	this.el[this.attr] = data
 	console.log(`更新了DOM-${this.expression}`)
 }
 

@@ -14,16 +14,15 @@ exports._compileElement = function(node) {
 }
 
 exports._compileText = function(node) {
-	let patt = /{{\w+}}/g
+	let patt = /\{?\{\{(.+?)\}\}\}?/g
 	let nodeValue = node.nodeValue
 	let expressions = nodeValue.match(patt)
-
 	if (!expressions) return
 
 	expressions.forEach((expression) => {
 		let el = document.createTextNode('')
 		node.parentNode.insertBefore(el, node)
-		let property = expression.replace(/[{}]/g, '')
+		let property = expression.replace(/[{}]/g, '').trim()
 		this._bindDirective('text', property, el)
 	})
 	node.parentNode.removeChild(node)

@@ -43,7 +43,10 @@ Observer.prototype.walk = function(obj) {
 	for (let key in obj) {
 		if (!obj.hasOwnProperty(key)) { return }
 		val = obj[key]
-
+		// console.log(key, val)
+		// if (typeof val === 'object') {
+		// 	console.log(val)
+		// }
 		this.observe(key, val)
 		this.convert(key, val)
 	}
@@ -190,9 +193,8 @@ Observer.prototype.emit = function(event, path, val) {
 	this._cbs = this._cbs || {}
 	let callbacks = this._cbs[event]
 	if (!callbacks) { return }
-
 	callbacks.forEach((cb, i) => {
-		// console.log(arguments)
+		console.log(arguments)
 		cb.apply(this, arguments)
 	})
 }

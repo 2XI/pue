@@ -10,9 +10,7 @@ const app = new Bue({
 		name: 'youngwind',
 		age: 24,
 		address: {
-			info: {
-				city: 'beijing'
-			}
+			city: 'beijing'
 		},
 		message: ['a', 'b', {
 			name: 'liangshaofeng',
@@ -26,7 +24,7 @@ app.$watch('name', function(val) {
 	console.log(`新的name为${val}`)
 })
 
-app.$watch('address.info.city', function(val) {
+app.$watch('address.city', function(val) {
 	console.log('我watch住了city')
 	console.log(`新的city为${val}`)
 })
